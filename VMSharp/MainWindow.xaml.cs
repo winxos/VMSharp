@@ -163,5 +163,10 @@ namespace VMSharp
             isrun = true;
             new Thread(runvm).Start();
         }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            spd.Content = (int)e.NewValue;
+        }
     }
 }
