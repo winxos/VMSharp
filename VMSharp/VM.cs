@@ -38,7 +38,6 @@ namespace VMSharp
         {
             Array.Clear(mem, 0, mem.Length);
             cs.CopyTo(mem, 0);
-
         }
         public void BindView(ref TextBlock tb)
         {
@@ -75,8 +74,16 @@ namespace VMSharp
                 view.Inlines.Add(new Run("\n"));
             }
         }
-        public RUN_STATE Step()
+        public void Step()
         {
+            state = _step();
+        }
+        private RUN_STATE _step()
+        {
+            if (state != RUN_STATE.OK)
+            {
+                return state;
+            }
             if (pc >= mem.Length)
             {
                 return RUN_STATE.OVERFLOW;

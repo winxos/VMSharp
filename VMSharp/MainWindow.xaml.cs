@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -98,12 +99,17 @@ namespace VMSharp
                 mcode.Text = s;
             }
         }
-
+        int read()
+        {
+            string str = Interaction.InputBox("请输入", "输入框", "0", -1, -1);
+            return int.Parse(str);
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             v.BindView(ref vmview);
             update_linenum();
             v.UpdateView();
+            v.read = read;
         }
         VM v = new VM();
         private void Button_Click(object sender, RoutedEventArgs e)
