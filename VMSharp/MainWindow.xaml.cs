@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -81,23 +82,34 @@ namespace VMSharp
             string sml = pretranslate(s);
             foreach (var key in keywords)
             {
-                sml = Regex.Replace(sml, key.Key + "\\W", string.Format("{0:00}", key.Value)); //op
+                if(key.Key != "HALT")
+                {
+                    sml = Regex.Replace(sml, key.Key + "\\W", string.Format("{0:00}", key.Value)); //op
+
+                }
+                else
+                {
+                    sml = Regex.Replace(sml, key.Key + "\\W", string.Format("{0:00}00\n", key.Value)); //op
+                }
             }
             sml = Regex.Replace(sml, "( )+", ""); //blank
-            sml = Regex.Replace(sml, @"\D43\D", "\n4300\n"); //halt
             return sml;
         }
-        private void input_TextChanged(object sender, TextChangedEventArgs e)
+        void auto_translate()
         {
             update_linenum();
             int pos = input.SelectionStart;
             input.Text = input.Text.ToUpper();
             input.Select(pos, 0);
-            if(mcode != null)
+            if (mcode != null)
             {
                 string s = translate(input.Text);
                 mcode.Text = s;
             }
+        }
+        private void input_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            auto_translate();
         }
         int read()
         {
@@ -106,24 +118,50 @@ namespace VMSharp
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            v.BindView(ref vmview);
+            vm.BindView(ref vmview);
             update_linenum();
-            v.UpdateView();
-            v.read = read;
+            vm.UpdateView();
+            vm.read = read;
+            input.Text = "READ 20\nLOAD 21\nADD 12\nSTORE 21\n" +
+                "LOAD 22\nADD 21\nSTORE 22\nLOAD 21\nSUB 20\n" +
+                "JMPZ 11\nJMP 01\nHALT\n0001\n";
+            auto_translate();
         }
-        VM v = new VM();
+        VM vm = new VM();
+        bool isrun = false;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string[] cs = mcode.Text.Trim().Split('\n');
             var ccs = Array.ConvertAll(cs, int.Parse);
-            v.loadCode(ccs);
-            v.UpdateView();
+            vm.loadCode(ccs);
+            vm.UpdateView();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            v.Step();
-            v.UpdateView();
+            vm.Step();
+            vm.UpdateView();
+        }
+        void runvm()
+        {
+            while (isrun)
+            {
+                vm.Step();
+                if (vm.state != VM.RUN_STATE.OK)
+                {
+                    break;
+                }
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    vm.UpdateView();
+                }));
+                Thread.Sleep(10);
+            }
+        }
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            isrun = true;
+            new Thread(runvm).Start();
         }
     }
 }

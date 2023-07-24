@@ -7,24 +7,27 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <DockPanel LastChildFill="True">
-            <TextBlock x:Name="vmview" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="0,15,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="400" Width="400" FontSize="12" FontFamily="Consolas" Foreground="#FF2D2D2D"/>
-            <DockPanel DockPanel.Dock="Right" Width="auto" LastChildFill="True">
+        <DockPanel LastChildFill="True" Background="#FF3E3E3E">
+            <DockPanel DockPanel.Dock="Left" Width="400">
+                <TextBlock x:Name="vmview" DockPanel.Dock="Top" Margin="15,15,15,15" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="240" FontSize="12" FontFamily="Consolas" Foreground="#FFA5A5A5"/>
                 <WrapPanel DockPanel.Dock="Bottom" Height="150" VerticalAlignment="Bottom">
-                    <Button Content="CodeToVM" Height="50" Width="160" Margin="10" Click="Button_Click"/>
-                    <Button Content="Step" Height="50" Width="160" Margin="10" Click="Button_Click_1"/>
-                    <Button Content="Run" Height="50" Width="160" Margin="10"/>
-                    <Button Content="Config" Height="50" Width="160" Margin="10"/>
+                    <Button Content="CodeToVM" Height="50" Width="150" Margin="20,10,10,10" Click="Button_Click" FontSize="16"/>
+                    <Button Content="Step" Height="50" Width="150" Margin="10" Click="Button_Click_1" FontSize="16"/>
+                    <Button Content="Run" Height="50" Width="150" Margin="20,10,10,10" Click="Button_Click_2" FontSize="16"/>
+                    <Button Content="Help" Height="50" Width="150" Margin="10" FontSize="16"/>
                 </WrapPanel>
+            </DockPanel>
+            <DockPanel DockPanel.Dock="Right" Width="auto" LastChildFill="True">
+                
                 <ScrollViewer DockPanel.Dock="Top" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="auto" >
                     <DockPanel >
                         <TextBlock x:Name="linnum" TextAlignment="Right" Width="30" Background="Gainsboro" FontSize="16" Foreground="#FF424242" FontFamily="Consolas"/>
                         <TextBox x:Name="input" TextWrapping="Wrap" Text="read 10" Width="200" Height="auto" AcceptsReturn="True" TextChanged="input_TextChanged" Background="#FFCECECE" FontSize="16" Foreground="#FF156FFF" ScrollViewer.CanContentScroll="True" FontFamily="Consolas"/>
-                        <TextBox DockPanel.Dock="Right" IsReadOnly="True" x:Name="mcode" TextWrapping="Wrap" Text="1010" Width="auto" Height="auto" AcceptsReturn="True" Background="#FFCECECE" FontSize="16" Foreground="#FF008025" ScrollViewer.CanContentScroll="True" FontFamily="Consolas"/>
+                        <TextBox DockPanel.Dock="Right" x:Name="mcode" TextWrapping="Wrap" Text="1010" Width="auto" Height="auto" AcceptsReturn="True" Background="#FFCECECE" FontSize="16" Foreground="#FF008025" ScrollViewer.CanContentScroll="True" FontFamily="Consolas"/>
                     </DockPanel>
                 </ScrollViewer>
             </DockPanel>
         </DockPanel>
- 
+
     </Grid>
 </Window>

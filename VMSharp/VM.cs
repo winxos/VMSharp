@@ -33,11 +33,15 @@ namespace VMSharp
             FINISHED,
             OVERFLOW
         }
-        RUN_STATE state;
+        public RUN_STATE state;
         public void loadCode(int[] cs)
         {
             Array.Clear(mem, 0, mem.Length);
             cs.CopyTo(mem, 0);
+            acc = 0;
+            pc = 0;
+            count = 0;
+            state = RUN_STATE.OK;
         }
         public void BindView(ref TextBlock tb)
         {
@@ -63,7 +67,7 @@ namespace VMSharp
                     {
                         view.Inlines.Add(new Run($"{mem[i * Columns + j]:0000} ")
                         {
-                            Foreground = Brushes.Red
+                            Foreground = Brushes.OrangeRed
                         });
                     }
                     else
