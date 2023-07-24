@@ -1,0 +1,30 @@
+﻿<Window x:Class="VMSharp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VMSharp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <TextBlock x:Name="vmview" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="0,15,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="400" Width="400" FontSize="12" FontFamily="Consolas" Foreground="#FF2D2D2D"/>
+            <DockPanel DockPanel.Dock="Right" Width="auto" LastChildFill="True">
+                <WrapPanel DockPanel.Dock="Bottom" Height="150" VerticalAlignment="Bottom">
+                    <Button Content="CodeToVM" Height="50" Width="160" Margin="10" Click="Button_Click"/>
+                    <Button Content="Step" Height="50" Width="160" Margin="10" Click="Button_Click_1"/>
+                    <Button Content="Run" Height="50" Width="160" Margin="10"/>
+                    <Button Content="Config" Height="50" Width="160" Margin="10"/>
+                </WrapPanel>
+                <ScrollViewer DockPanel.Dock="Top" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                    <DockPanel >
+                        <TextBlock x:Name="linnum" TextAlignment="Right" Width="30" Background="Gainsboro" FontSize="16" Foreground="#FF424242" FontFamily="Consolas"/>
+                        <TextBox x:Name="input" TextWrapping="Wrap" Text="read 10" Width="200" Height="auto" AcceptsReturn="True" TextChanged="input_TextChanged" Background="#FFCECECE" FontSize="16" Foreground="#FF156FFF" ScrollViewer.CanContentScroll="True" FontFamily="Consolas"/>
+                        <TextBox DockPanel.Dock="Right" IsReadOnly="True" x:Name="mcode" TextWrapping="Wrap" Text="1010" Width="auto" Height="auto" AcceptsReturn="True" Background="#FFCECECE" FontSize="16" Foreground="#FF008025" ScrollViewer.CanContentScroll="True" FontFamily="Consolas"/>
+                    </DockPanel>
+                </ScrollViewer>
+            </DockPanel>
+        </DockPanel>
+ 
+    </Grid>
+</Window>
