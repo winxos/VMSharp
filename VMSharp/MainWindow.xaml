@@ -5,26 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VMSharp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="HAVE FUN" Height="450" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Unloaded="Window_Unloaded">
     <Grid>
-        <DockPanel LastChildFill="True" Background="#FF3E3E3E">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="349*"/>
+            <ColumnDefinition Width="451*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel LastChildFill="True" Background="#FF3E3E3E" Grid.ColumnSpan="2">
             <StackPanel DockPanel.Dock="Left" Width="400">
                 <TextBlock x:Name="vmview" DockPanel.Dock="Top" Margin="15,15,15,15" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="220" FontSize="12" FontFamily="Consolas" Foreground="#FFA5A5A5"/>
                 <DockPanel Margin="20,0,40,0">
-                    <Label Content="Step Delay:"/>
-                    <Label x:Name="spd" Content="" DockPanel.Dock="Right"/>
+                    <Label Content="Step Delay:" Foreground="White"/>
+                    <Label x:Name="spd" Content="10" DockPanel.Dock="Right" Foreground="DeepSkyBlue" Background="{x:Null}"/>
                     <Slider Maximum="1000"  SmallChange="1" LargeChange="100" Value="10" ValueChanged="Slider_ValueChanged" />
                 </DockPanel>
-                
+
                 <WrapPanel DockPanel.Dock="Bottom" Height="150" VerticalAlignment="Bottom">
-                    <Button Content="CodeToVM" Height="50" Width="150" Margin="20,10,10,10" Click="Button_Click" FontSize="16"/>
-                    <Button Content="Step" Height="50" Width="150" Margin="10" Click="Button_Click_1" FontSize="16"/>
-                    <Button Content="Run" Height="50" Width="150" Margin="20,10,10,10" Click="Button_Click_2" FontSize="16"/>
-                    <Button Content="Help" Height="50" Width="150" Margin="10" FontSize="16"/>
+                    <Button Content="CodeToVM" Height="50" Width="150" Margin="20,10,10,10" Click="Button_Click" FontSize="24" FontFamily="Consolas"/>
+                    <Button Content="Step" Height="50" Width="150" Margin="10" Click="Button_Click_1" FontSize="24" FontFamily="Consolas"/>
+                    <Button Content="Run" Height="50" Width="150" Margin="20,0,10,10" Click="Button_Click_2" FontSize="24" FontFamily="Consolas"/>
+                    <Button Content="Help" Height="50" Width="150" Margin="10,0,10,10" FontSize="24" Click="Button_Click_3" FontFamily="Consolas"/>
                 </WrapPanel>
             </StackPanel>
             <DockPanel DockPanel.Dock="Right" Width="auto" LastChildFill="True">
-                
+
                 <ScrollViewer DockPanel.Dock="Top" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="auto" >
                     <DockPanel >
                         <TextBlock x:Name="linnum" TextAlignment="Right" Width="30" Background="Gainsboro" FontSize="16" Foreground="#FF424242" FontFamily="Consolas"/>

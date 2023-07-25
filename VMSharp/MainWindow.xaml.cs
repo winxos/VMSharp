@@ -1,7 +1,9 @@
 ﻿using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -44,6 +46,7 @@ namespace VMSharp
             {"JMP",40 },{"JMPN",41},{"JMPZ",42},
             {"HALT",43 }
         };
+        int delay = 0;
         string pretranslate(string s)
         {
             string str = "";
@@ -118,55 +121,85 @@ namespace VMSharp
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            this.Title = Assembly.GetExecutingAssembly().GetName().Name +
+                " v" + Assembly.GetExecutingAssembly().GetName().Version;
+            
             vm.BindView(ref vmview);
             update_linenum();
-            vm.UpdateView();
             vm.read = read;
             input.Text = "READ 20\nLOAD 21\nADD 12\nSTORE 21\n" +
                 "LOAD 22\nADD 21\nSTORE 22\nLOAD 21\nSUB 20\n" +
                 "JMPZ 11\nJMP 01\nHALT\n0001\n";
             auto_translate();
+            Thread t = new Thread(auto_update_view);
+            t.IsBackground = true;
+            t.Start();
         }
         VM vm = new VM();
-        bool isrun = false;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string[] cs = mcode.Text.Trim().Split('\n');
             var ccs = Array.ConvertAll(cs, int.Parse);
             vm.loadCode(ccs);
-            vm.UpdateView();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             vm.Step();
-            vm.UpdateView();
         }
         void runvm()
         {
-            while (isrun)
+            while (true)
             {
                 vm.Step();
                 if (vm.state != VM.RUN_STATE.OK)
                 {
                     break;
                 }
-                Dispatcher.Invoke(new Action(() =>
+                Thread.Sleep(delay);
+            }
+        }
+        void auto_update_view()
+        {
+            while (true)
+            {
+                try
                 {
-                    vm.UpdateView();
-                }));
-                Thread.Sleep(10);
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        vm.UpdateView();
+                    }));
+                    Thread.Sleep(500);
+                }
+                catch (Exception)
+                {
+
+                }
+                
             }
         }
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            isrun = true;
-            new Thread(runvm).Start();
+            Thread t = new Thread(runvm);
+            t.IsBackground = true;
+            t.Start();
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             spd.Content = (int)e.NewValue;
+            delay = (int)e.NewValue;
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            help h = new help();
+            h.ShowDialog();
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
