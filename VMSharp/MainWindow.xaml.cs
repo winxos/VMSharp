@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Deployment.Application;
 
 namespace VMSharp
 {
@@ -116,9 +117,12 @@ namespace VMSharp
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Title = Assembly.GetExecutingAssembly().GetName().Name +
-                " v" + Assembly.GetExecutingAssembly().GetName().Version;
-            
+            this.Title = Assembly.GetExecutingAssembly().GetName().Name;
+            if (ApplicationDeployment.IsNetworkDeployed)
+            {
+                this.Title += " v"+ApplicationDeployment.CurrentDeployment.
+                    CurrentVersion.ToString();
+            }
             vm.BindView(ref vmview);
             update_linenum();
             vm.read = read;
