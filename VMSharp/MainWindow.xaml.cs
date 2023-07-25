@@ -39,10 +39,10 @@ namespace VMSharp
             linnum.Text = x;
         }
         Dictionary<string, int> tags = new Dictionary<string, int>();
-        Dictionary<string, int> keywords = new Dictionary<string, int>
+        public static Dictionary<string, int> keywords = new Dictionary<string, int>
         {
             {"READ",10 },{"WRITE",11},{"LOAD",20},{"STORE",21},
-            {"ADD",30 },{"SUB",31 },{"MUL",32 },{"DIV",33 },
+            {"ADD",30 },{"SUB",31 },{"MUL",32 },{"DIV",33 },{"MOD",34},
             {"JMP",40 },{"JMPN",41},{"JMPZ",42},
             {"HALT",43 }
         };

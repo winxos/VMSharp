@@ -28,10 +28,10 @@ namespace VMSharp
         {
             help1.FontSize = 24;
             help1.Text = "Supported Instruction\n\n";
-            help1.Text += "READ:10\n";
-            help1.Text += "LOAD:20 STORE:21\n";
-            help1.Text += "ADD:30 SUB:31 MUL:32 DIV:33\n";
-            help1.Text += "JMP:40 JMPN:41 JMPZ:42 HALT:43\n";
+            foreach(var k in MainWindow.keywords)
+            {
+                help1.Text += k.Key + ":" + k.Value + " ";
+            }
         }
     }
 }

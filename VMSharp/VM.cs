@@ -17,7 +17,7 @@ namespace VMSharp
         {
             READ = 10, WRITE,
             LOAD = 20, STORE,
-            ADD = 30, SUB, MUL, DIV,
+            ADD = 30, SUB, MUL, DIV,MOD,
             JMP = 40, JMPN, JMPZ, HALT
         }
         const int MAX_MEM = 100;
@@ -118,6 +118,7 @@ namespace VMSharp
                 case KeyWords.SUB: acc -= mem[operand]; break;
                 case KeyWords.MUL: acc *= mem[operand]; break;
                 case KeyWords.DIV: acc /= mem[operand]; break;
+                case KeyWords.MOD: acc %= mem[operand]; break;
                 case KeyWords.JMP: pc = operand - 1; break;
                 case KeyWords.JMPN: pc = acc < 0 ? operand - 1 : pc; break;
                 case KeyWords.JMPZ: pc = acc == 0 ? operand - 1 : pc; break;

@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:VMSharp"
         mc:Ignorable="d"
         Title="help" Height="300" Width="400" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
-    <Grid Background="#FF5A5A5A">
-        <TextBlock x:Name="help1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock"  FontSize="16"  Foreground="#FF00E2FF" Margin="10,10,10,10"/>
+    <Grid Background="#FF2D2D2D">
+        <TextBlock x:Name="help1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock"  FontSize="16"  Foreground="#FF517BFF" Margin="10,10,10,10"/>
 
     </Grid>
 </Window>
