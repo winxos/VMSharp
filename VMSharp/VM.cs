@@ -98,6 +98,10 @@ namespace VMSharp
             KeyWords opcode =(KeyWords)( code / 1000000);
             int operand = code % 1000000;
             count++;
+            if (operand>= mem.Length)
+            {
+                return RUN_STATE.OVERFLOW;
+            }
             switch (opcode)
             {
                 case KeyWords.READ:
