@@ -13,11 +13,13 @@ namespace VMSharp
 {
     internal class VM
     {
-        Dictionary<int, string> keywords = new Dictionary<int, string>{
-            {10,"READ"},{11,"WRITE"},
-            {20,"LOAD"},{21,"STORE"},
-            {30,"ADD"},{31,"SUB"},{32,"MUL"},{33,"DIV"},
-            {40,"JMP"},{41,"JMPN"},{42,"JMPZ"},{43,"HALT"}};
+        enum KeyWords
+        {
+            READ = 10, WRITE,
+            LOAD = 20, STORE,
+            ADD = 30, SUB, MUL, DIV,
+            JMP = 40, JMPN, JMPZ, HALT
+        }
         const int MAX_MEM = 100;
         const int Columns = 10;
         int[] mem = new int[MAX_MEM];
@@ -49,13 +51,13 @@ namespace VMSharp
         }
         public void UpdateView()
         {
-            view.Text  = $"{' ',10}Virtal Machine Sharp\n";
-            view.Text += $"{' ',30}winxos 2010-2023\n";
-            view.Text += $"     ACC:{acc,5}  PC:{pc,5} CNT:{count,5} STA:{state,5}\n";
+            view.Text = $"{' ',30}Virtal Machine Sharp\n";
+            view.Text += $"{' ',60}winxos 2010-2023\n";
+            view.Text += $"ACC:{acc,9}  PC:{pc,9} CNT:{count,9} STA:{state,9}\n";
             view.Text += $"MEM:\n{' ',4}";
             for (int i = 0; i < Columns; i++)
             {
-                view.Inlines.Add(new Run($"{i,5}"));
+                view.Inlines.Add(new Run($"{i,9}"));
             }
             view.Inlines.Add(new Run("\n"));
             for (int i = 0; i < MAX_MEM / Columns; i++)
@@ -65,14 +67,14 @@ namespace VMSharp
                 {
                     if (i * 10 + j == pc)
                     {
-                        view.Inlines.Add(new Run($"{mem[i * Columns + j]:0000} ")
+                        view.Inlines.Add(new Run($"{mem[i * Columns + j]:00000000} ")
                         {
                             Foreground = Brushes.OrangeRed
                         });
                     }
                     else
                     {
-                        view.Inlines.Add(new Run($"{mem[i * Columns + j]:0000} "));
+                        view.Inlines.Add(new Run($"{mem[i * Columns + j]:00000000} "));
                     }
                 }
                 view.Inlines.Add(new Run("\n"));
@@ -93,36 +95,34 @@ namespace VMSharp
                 return RUN_STATE.OVERFLOW;
             }
             int code = mem[pc];
-            int opcode = code / mem.Length;
-            int operand = code % mem.Length;
+            KeyWords opcode =(KeyWords)( code / 1000000);
+            int operand = code % 1000000;
             count++;
-            if (keywords.ContainsKey(opcode))
+            switch (opcode)
             {
-                switch (keywords[opcode])
-                {
-                    case "READ":
-                        if (read != null)
-                        {
-                            mem[operand] = read(); 
-                        }
-                        break;
-                    case "WRITE":
-                        if (write != null)
-                        {
-                            write(mem[operand]);
-                        }
-                        break;
-                    case "LOAD": acc = mem[operand]; break;
-                    case "STORE": mem[operand] = acc; break;
-                    case "ADD": acc += mem[operand]; break;
-                    case "SUB": acc -= mem[operand]; break;
-                    case "MUL": acc *= mem[operand]; break;
-                    case "DIV": acc /= mem[operand]; break;
-                    case "JMP": pc = operand - 1; break;
-                    case "JMPN": pc = acc < 0 ? operand - 1 : pc; break;
-                    case "JMPZ": pc = acc == 0 ? operand - 1 : pc; break;
-                    case "HALT":  return RUN_STATE.FINISHED;
-                }
+                case KeyWords.READ:
+                    if (read != null)
+                    {
+                        mem[operand] = read();
+                    }
+                    break;
+                case KeyWords.WRITE:
+                    if (write != null)
+                    {
+                        write(mem[operand]);
+                    }
+                    break;
+                case KeyWords.LOAD: acc = mem[operand]; break;
+                case KeyWords.STORE: mem[operand] = acc; break;
+                case KeyWords.ADD: acc += mem[operand]; break;
+                case KeyWords.SUB: acc -= mem[operand]; break;
+                case KeyWords.MUL: acc *= mem[operand]; break;
+                case KeyWords.DIV: acc /= mem[operand]; break;
+                case KeyWords.JMP: pc = operand - 1; break;
+                case KeyWords.JMPN: pc = acc < 0 ? operand - 1 : pc; break;
+                case KeyWords.JMPZ: pc = acc == 0 ? operand - 1 : pc; break;
+                case KeyWords.HALT: return RUN_STATE.FINISHED;
+                default:break;
             }
             pc++;
             return RUN_STATE.OK;

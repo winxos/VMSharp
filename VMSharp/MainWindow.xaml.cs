@@ -32,7 +32,7 @@ namespace VMSharp
         private void update_linenum()
         {
             var x = string.Empty;
-            for (var i = 0; i < input.LineCount && i < 2000; i++)
+            for (var i = 0; i < input.LineCount; i++)
             {
                 x += i.ToString("00\n");
             }
@@ -53,25 +53,7 @@ namespace VMSharp
             string[] ls = s.Split('\n');
             for (int i = 0; i < ls.Length; i++) //scan the :label
             {
-                if (ls[i].StartsWith(":")) //label
-                {
-                    string ts = ls[i].Trim();
-                    string[] token = ts.Substring(1, ts.Length - 1).Split();
-                    if (token[0] != "")
-                    {
-                        tags[token[0]] = i;
-                        if (token.Length == 2) //:x 1, label with value
-                        {
-                            str += token[1] + "\n";
-                        }
-                        else
-                        {
-                            str += "0000\n";
-                        }
-                    }
-                    continue;
-                }
-                else if (ls[i] == "") str += "0000\n"; //blank
+                if (ls[i] == "") str += "00000000\n"; //blank
                 else str += ls[i] + "\n"; //normal
             }
             foreach (KeyValuePair<string, int> key in tags) //replace label
@@ -82,20 +64,32 @@ namespace VMSharp
         }
         string translate(string s) //to machine language
         {
-            string sml = pretranslate(s);
-            foreach (var key in keywords)
+            string sml = string.Empty;
+            string[] ss = s.Split('\n');
+            foreach(var it in ss)
             {
-                if(key.Key != "HALT")
+                var c = it.Split(' ');
+                if (c.Length == 2)
                 {
-                    sml = Regex.Replace(sml, key.Key + "\\W", string.Format("{0:00}", key.Value)); //op
-
+                    if (keywords.ContainsKey(c[0]))
+                    {
+                        sml += keywords[c[0]] + int.Parse(c[1]).ToString("000000\n");
+                    }
                 }
-                else
+                else if(c.Length == 1)
                 {
-                    sml = Regex.Replace(sml, key.Key + "\\W", string.Format("{0:00}00\n", key.Value)); //op
-                }
+                    if (c[0] == "HALT")
+                    {
+                        sml += "43000000\n";
+                    }
+                    else
+                    {
+                        int t;
+                        int.TryParse(c[0], out t);
+                        sml += t.ToString("00000000\n");
+                    }
+                } 
             }
-            sml = Regex.Replace(sml, "( )+", ""); //blank
             return sml;
         }
         void auto_translate()
@@ -106,8 +100,7 @@ namespace VMSharp
             input.Select(pos, 0);
             if (mcode != null)
             {
-                string s = translate(input.Text);
-                mcode.Text = s;
+                mcode.Text = translate(input.Text);
             }
         }
         private void input_TextChanged(object sender, TextChangedEventArgs e)
