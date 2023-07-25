@@ -73,7 +73,9 @@ namespace VMSharp
                 {
                     if (keywords.ContainsKey(c[0]))
                     {
-                        sml += keywords[c[0]] + int.Parse(c[1]).ToString("000000\n");
+                        int t = 0;
+                        int.TryParse(c[1], out t);
+                        sml += keywords[c[0]] + t.ToString("000000\n");
                     }
                 }
                 else if(c.Length == 1)
