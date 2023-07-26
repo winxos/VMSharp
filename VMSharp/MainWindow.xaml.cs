@@ -42,8 +42,9 @@ namespace VMSharp
         Dictionary<string, int> labels = new Dictionary<string, int>();
         public static Dictionary<string, int> keywords = new Dictionary<string, int>
         {
-            {"READ",10 },{"WRITE",11},{"LOAD",20},{"STORE",21},
+            {"READ",10 },{"LOAD",20},{"STORE",21},
             {"ADD",30 },{"SUB",31 },{"MUL",32 },{"DIV",33 },{"MOD",34},
+            {"ADDI",35 },{"SUBI",36 },{"MULI",37 },{"DIVI",38 },{"MODI",39},
             {"JMP",40 },{"JMPN",41},{"JMPZ",42},
             {"HALT",43 }
         };
@@ -61,7 +62,7 @@ namespace VMSharp
                     string[] token = ts.Substring(1, ts.Length - 1).Split();
                     if (token[0] != "")
                     {
-                        labels[token[0]] = i;
+                        labels[token[0]] = i-labels.Count;
                     }
                 }
                 else
@@ -73,7 +74,7 @@ namespace VMSharp
             {
                 str = Regex.Replace(str, " " + key.Key, string.Format(" {0}", key.Value));
             }
-            return str;
+            return str.Trim();
         }
         string translate(string s) //to machine language
         {
@@ -139,9 +140,9 @@ namespace VMSharp
             vm.BindView(ref vmview);
             update_linenum();
             vm.read = read;
-            input.Text = "READ 20\nLOAD 21\nADD 12\nSTORE 21\n" +
+            input.Text ="READ 20\n:FOR\nLOAD 21\nADDI 1\nSTORE 21\n" +
                 "LOAD 22\nADD 21\nSTORE 22\nLOAD 21\nSUB 20\n" +
-                "JMPZ 11\nJMP 01\nHALT\n0001\n";
+                "JMPZ END\nJMP FOR\n:END\nHALT";
             auto_translate();
             Thread t = new Thread(auto_update_view);
             t.IsBackground = true;

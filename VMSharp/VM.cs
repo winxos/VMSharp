@@ -17,7 +17,7 @@ namespace VMSharp
         {
             READ = 10, WRITE,
             LOAD = 20, STORE,
-            ADD = 30, SUB, MUL, DIV,MOD,
+            ADD = 30, SUB, MUL, DIV, MOD, ADDI, SUBI, MULI, DIVI, MODI,
             JMP = 40, JMPN, JMPZ, HALT
         }
         const int MAX_MEM = 100;
@@ -95,10 +95,10 @@ namespace VMSharp
                 return RUN_STATE.OVERFLOW;
             }
             int code = mem[pc];
-            KeyWords opcode =(KeyWords)( code / 1000000);
+            KeyWords opcode = (KeyWords)(code / 1000000);
             int operand = code % 1000000;
             count++;
-            if (operand>= mem.Length)
+            if (operand >= mem.Length)
             {
                 return RUN_STATE.OVERFLOW;
             }
@@ -123,11 +123,16 @@ namespace VMSharp
                 case KeyWords.MUL: acc *= mem[operand]; break;
                 case KeyWords.DIV: acc /= mem[operand]; break;
                 case KeyWords.MOD: acc %= mem[operand]; break;
+                case KeyWords.ADDI: acc += operand; break;
+                case KeyWords.SUBI: acc -= operand; break;
+                case KeyWords.MULI: acc *= operand; break;
+                case KeyWords.DIVI: acc /= operand; break;
+                case KeyWords.MODI: acc %= operand; break;
                 case KeyWords.JMP: pc = operand - 1; break;
                 case KeyWords.JMPN: pc = acc < 0 ? operand - 1 : pc; break;
                 case KeyWords.JMPZ: pc = acc == 0 ? operand - 1 : pc; break;
                 case KeyWords.HALT: return RUN_STATE.FINISHED;
-                default:break;
+                default: break;
             }
             pc++;
             return RUN_STATE.OK;

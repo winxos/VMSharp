@@ -27,10 +27,10 @@ namespace VMSharp
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             help1.FontSize = 24;
-            help1.Text = "Supported Instruction\n\n";
+            help1.Text = "Supported Instruction\n";
             foreach(var k in MainWindow.keywords)
             {
-                help1.Text += k.Key + ":" + k.Value + " ";
+                help1.Text +=$"{k.Key,5}:{k.Value,-3}";
             }
         }
     }
