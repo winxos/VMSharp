@@ -39,7 +39,7 @@ namespace VMSharp
             }
             linnum.Text = x;
         }
-        Dictionary<string, int> tags = new Dictionary<string, int>();
+        Dictionary<string, int> labels = new Dictionary<string, int>();
         public static Dictionary<string, int> keywords = new Dictionary<string, int>
         {
             {"READ",10 },{"WRITE",11},{"LOAD",20},{"STORE",21},
@@ -48,23 +48,36 @@ namespace VMSharp
             {"HALT",43 }
         };
         int delay = 0;
-        string pretranslate(string s)
+        string get_labels(string s)
         {
+            labels.Clear();
             string str = "";
             string[] ls = s.Split('\n');
             for (int i = 0; i < ls.Length; i++) //scan the :label
             {
-                if (ls[i] == "") str += "00000000\n"; //blank
-                else str += ls[i] + "\n"; //normal
+                if (ls[i].StartsWith(":")) //label
+                {
+                    string ts = ls[i].Trim();
+                    string[] token = ts.Substring(1, ts.Length - 1).Split();
+                    if (token[0] != "")
+                    {
+                        labels[token[0]] = i;
+                    }
+                }
+                else
+                {
+                    str += ls[i] + "\n";
+                }
             }
-            foreach (KeyValuePair<string, int> key in tags) //replace label
+            foreach (KeyValuePair<string, int> key in labels) //replace label
             {
-                str = Regex.Replace(str, " " + key.Key + "\\W", string.Format(" {0:00}", key.Value));
+                str = Regex.Replace(str, " " + key.Key, string.Format(" {0}", key.Value));
             }
             return str;
         }
         string translate(string s) //to machine language
         {
+            s = get_labels(s);
             string sml = string.Empty;
             string[] ss = s.Split('\n');
             foreach(var it in ss)
@@ -85,7 +98,7 @@ namespace VMSharp
                     {
                         sml += "43000000\n";
                     }
-                    else
+                    else if (!c[0].StartsWith(":"))
                     {
                         int t;
                         int.TryParse(c[0], out t);
