@@ -37,13 +37,26 @@ namespace VMSharp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("本次更新内容：\r\n1. 支持DIM N方式定义变量，\r\n  变量位置根据出现顺序，\r\n  从内存最后位置往前倒排。")]
+        [global::System.Configuration.DefaultSettingValueAttribute("更新时间：20230727\r\n本次更新内容：\r\n1. 增加PRINT语句。")]
         public string msg {
             get {
                 return ((string)(this["msg"]));
             }
             set {
                 this["msg"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("更新时间：20230727\r\n本次更新内容：\r\n1. 支持DIM N方式定义变量，\r\n  变量位置根据出现顺序，\r\n  从内存最后位置往前倒排。\r\n更新时间：20" +
+            "230726\r\n本次更新内容：\r\n1. 完成基本功能，添加标号。")]
+        public string msg_history {
+            get {
+                return ((string)(this["msg_history"]));
+            }
+            set {
+                this["msg_history"] = value;
             }
         }
     }

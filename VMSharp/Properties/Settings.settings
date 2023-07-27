@@ -6,10 +6,19 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="msg" Type="System.String" Scope="User">
-      <Value Profile="(Default)">本次更新内容：
+      <Value Profile="(Default)">更新时间：20230727
+本次更新内容：
+1. 增加PRINT语句。</Value>
+    </Setting>
+    <Setting Name="msg_history" Type="System.String" Scope="User">
+      <Value Profile="(Default)">更新时间：20230727
+本次更新内容：
 1. 支持DIM N方式定义变量，
   变量位置根据出现顺序，
-  从内存最后位置往前倒排。</Value>
+  从内存最后位置往前倒排。
+更新时间：20230726
+本次更新内容：
+1. 完成基本功能，添加标号。</Value>
     </Setting>
   </Settings>
 </SettingsFile>

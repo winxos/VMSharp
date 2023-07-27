@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VMSharp"
         mc:Ignorable="d"
-        Title="HAVE FUN" Height="450" Width="920" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Unloaded="Window_Unloaded">
+        Title="HAVE FUN" Height="500" Width="920" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Unloaded="Window_Unloaded">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF00283C"/>
@@ -34,13 +34,13 @@
                     <Slider Maximum="1000"  SmallChange="1" LargeChange="100" Value="10" ValueChanged="Slider_ValueChanged" />
                 </DockPanel>
 
-                <WrapPanel DockPanel.Dock="Bottom" Height="100" VerticalAlignment="Bottom" Margin="20,0,0,0">
+                <WrapPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="20,0,0,0">
                     <Button Content="CodeToVM" Height="50" Width="120" Margin="10,10,10,10" Click="Button_Click" FontSize="24" FontFamily="Consolas"/>
                     <Button Content="Step" Height="50" Width="120" Margin="10" Click="Button_Click_1" FontSize="24" FontFamily="Consolas"/>
                     <Button Content="Run" Height="50" Width="120" Margin="10,10,10,10" Click="Button_Click_2" FontSize="24" FontFamily="Consolas"/>
                     <Button Content="Help" Height="50" Width="120" Margin="10,10,10,10" FontSize="24" Click="Button_Click_3" FontFamily="Consolas"/>
                 </WrapPanel>
-                
+                <TextBlock x:Name="console" FontFamily="Consolas" Height="auto" FontSize="14" Foreground="White" ScrollViewer.VerticalScrollBarVisibility="Auto"></TextBlock>
             </StackPanel>
             
         </DockPanel>

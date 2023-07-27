@@ -44,7 +44,7 @@ namespace VMSharp
         Dictionary<string, int> vars = new Dictionary<string, int>();
         public static Dictionary<string, int> keywords = new Dictionary<string, int>
         {
-            {"READ",10 },{"LOAD",20},{"STORE",21},
+            {"READ",10 },{"PRINT",11 },{"LOAD",20},{"STORE",21},
             {"ADD",30 },{"SUB",31 },{"MUL",32 },{"DIV",33 },{"MOD",34},
             {"ADDI",35 },{"SUBI",36 },{"MULI",37 },{"DIVI",38 },{"MODI",39},
             {"JMP",40 },{"JMPN",41},{"JMPZ",42},
@@ -76,6 +76,7 @@ namespace VMSharp
                     {
                         vars[token[1]] = VM.MAX_MEM - 1 - vars.Count;
                     }
+
                 }
                 else
                 {
@@ -149,6 +150,13 @@ namespace VMSharp
             string str = Interaction.InputBox("请输入", "输入框", "0", -1, -1);
             return int.Parse(str);
         }
+        void write(int n)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                console.Text += n.ToString() + " ";
+            }));
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.Title = Assembly.GetExecutingAssembly().GetName().Name;
@@ -167,6 +175,7 @@ namespace VMSharp
             vm.BindView(ref vmview);
             update_linenum();
             vm.read = read;
+            vm.write = write;
             input.Text =
 @"DIM N
 DIM I
@@ -184,6 +193,7 @@ SUB N
 JMPZ END
 JMP FOR
 :END
+PRINT S
 HALT
 ";
             auto_translate();
