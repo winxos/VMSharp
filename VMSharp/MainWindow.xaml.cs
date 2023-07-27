@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Deployment.Application;
+using System.Windows.Ink;
 
 namespace VMSharp
 {
@@ -40,6 +41,7 @@ namespace VMSharp
             linnum.Text = x;
         }
         Dictionary<string, int> labels = new Dictionary<string, int>();
+        Dictionary<string, int> vars = new Dictionary<string, int>();
         public static Dictionary<string, int> keywords = new Dictionary<string, int>
         {
             {"READ",10 },{"LOAD",20},{"STORE",21},
@@ -52,6 +54,7 @@ namespace VMSharp
         string get_labels(string s)
         {
             labels.Clear();
+            vars.Clear();
             string str = "";
             string[] ls = s.Split('\n');
             for (int i = 0; i < ls.Length; i++) //scan the :label
@@ -62,7 +65,16 @@ namespace VMSharp
                     string[] token = ts.Substring(1, ts.Length - 1).Split();
                     if (token[0] != "")
                     {
-                        labels[token[0]] = i-labels.Count;
+                        labels[token[0]] = i-labels.Count-vars.Count;
+                    }
+                }
+                else if (ls[i].StartsWith("DIM "))
+                {
+                    string ts = ls[i].Trim();
+                    string[] token = ts.Substring(1, ts.Length - 1).Split();
+                    if(token.Length == 2)
+                    {
+                        vars[token[1]] = VM.MAX_MEM - 1 - vars.Count;
                     }
                 }
                 else
@@ -70,7 +82,11 @@ namespace VMSharp
                     str += ls[i] + "\n";
                 }
             }
-            foreach (KeyValuePair<string, int> key in labels) //replace label
+            foreach (var key in labels) //replace label
+            {
+                str = Regex.Replace(str, " " + key.Key, string.Format(" {0}", key.Value));
+            }
+            foreach (var key in vars) //replace vars
             {
                 str = Regex.Replace(str, " " + key.Key, string.Format(" {0}", key.Value));
             }
@@ -111,6 +127,10 @@ namespace VMSharp
         }
         void auto_translate()
         {
+            if(!IsLoaded)
+            { 
+                return; 
+            }
             update_linenum();
             int pos = input.SelectionStart;
             input.Text = input.Text.ToUpper();
@@ -134,19 +154,43 @@ namespace VMSharp
             this.Title = Assembly.GetExecutingAssembly().GetName().Name;
             if (ApplicationDeployment.IsNetworkDeployed)
             {
-                this.Title += " v"+ApplicationDeployment.CurrentDeployment.
+                string s = ApplicationDeployment.CurrentDeployment.
                     CurrentVersion.ToString();
+                this.Title += " v"+s;
+                if(s != Properties.Settings.Default.version)
+                {
+                    Properties.Settings.Default.version = s;
+                    Properties.Settings.Default.Save();
+                    MessageBox.Show(Properties.Settings.Default.msg);
+                }
             }
             vm.BindView(ref vmview);
             update_linenum();
             vm.read = read;
-            input.Text ="READ 20\n:FOR\nLOAD 21\nADDI 1\nSTORE 21\n" +
-                "LOAD 22\nADD 21\nSTORE 22\nLOAD 21\nSUB 20\n" +
-                "JMPZ END\nJMP FOR\n:END\nHALT";
+            input.Text =
+@"DIM N
+DIM I
+DIM S
+READ N
+:FOR
+LOAD I
+ADDI 1
+STORE I
+LOAD S
+ADD I
+STORE S
+LOAD I
+SUB N
+JMPZ END
+JMP FOR
+:END
+HALT
+";
             auto_translate();
             Thread t = new Thread(auto_update_view);
             t.IsBackground = true;
             t.Start();
+            
         }
         VM vm = new VM();
         private void Button_Click(object sender, RoutedEventArgs e)

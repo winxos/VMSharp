@@ -20,7 +20,7 @@ namespace VMSharp
             ADD = 30, SUB, MUL, DIV, MOD, ADDI, SUBI, MULI, DIVI, MODI,
             JMP = 40, JMPN, JMPZ, HALT
         }
-        const int MAX_MEM = 100;
+        public const int MAX_MEM = 100;
         const int Columns = 10;
         int[] mem = new int[MAX_MEM];
         int acc = 0;

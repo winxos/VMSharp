@@ -18,8 +18,8 @@
             <DockPanel DockPanel.Dock="Right" Width="250" LastChildFill="True">
                 <ScrollViewer DockPanel.Dock="Top" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="auto" >
                     <DockPanel >
-                        <TextBlock x:Name="linnum" TextAlignment="Right" Width="30" Background="Gainsboro" FontSize="16" Foreground="#FF424242" FontFamily="Consolas"/>
                         <TextBox x:Name="input" TextWrapping="Wrap" Text="read 10" Width="100" Height="auto" AcceptsReturn="True" TextChanged="input_TextChanged" Background="#FFCECECE" FontSize="16" Foreground="#FF156FFF" ScrollViewer.CanContentScroll="True" FontFamily="Consolas"/>
+                        <TextBlock x:Name="linnum" TextAlignment="Right" Width="30" Background="Gainsboro" FontSize="16" Foreground="#FF424242" FontFamily="Consolas"/>
                         <TextBox DockPanel.Dock="Right" x:Name="mcode" TextWrapping="Wrap" Text="1010" Width="auto" Height="auto" AcceptsReturn="True" Background="#FFCECECE" FontSize="16" Foreground="#FF008025" ScrollViewer.CanContentScroll="True" FontFamily="Consolas"/>
                     </DockPanel>
                 </ScrollViewer>
